@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pay.recontwo.core.mapper.InvoiceMapper">
+	<resultMap id="Invoice" type="com.pay.recontwo.model.Invoice">
+		<id column="id" property="id" />
+		<result column="optimistic" property="optimistic" />
+	    	<result column="user_role" property="userRole" />
+	    	<result column="user_code" property="userCode" />
+	    	<result column="invoice_id" property="invoiceId" />
+	    	<result column="invoice_code" property="invoiceCode" />
+	    	<result column="invoice_num" property="invoiceNum" />
+	    	<result column="check_code" property="checkCode" />
+	    	<result column="invoice_date" property="invoiceDate" />
+	    	<result column="expiry_date" property="expiryDate" />
+	    	<result column="invoice_type_name" property="invoiceTypeName" />
+	    	<result column="total_amount" property="totalAmount" />
+	    	<result column="device_code" property="deviceCode" />
+	    	<result column="psw_code" property="pswCode" />
+	    	<result column="area" property="area" />
+	    	<result column="buyer_name" property="buyerName" />
+	    	<result column="buyer_code" property="buyerCode" />
+	    	<result column="buyer_info" property="buyerInfo" />
+	    	<result column="buyer_account" property="buyerAccount" />
+	    	<result column="supplier_name" property="supplierName" />
+	    	<result column="supplier_code" property="supplierCode" />
+	    	<result column="supplier_info" property="supplierInfo" />
+	    	<result column="supplier_account" property="supplierAccount" />
+	    	<result column="amount_useable" property="amountUseable" />
+	    	<result column="amount_paid" property="amountPaid" />
+	    	<result column="is_used" property="isUsed" />
+	    	<result column="is_modify" property="isModify" />
+	    	<result column="note" property="note" />
+	    	<result column="input_way" property="inputWay" />
+	    	<result column="input_user" property="inputUser" />
+	    	<result column="modify_time" property="modifyTime" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	<sql id="commonColumn">
+		id,
+		optimistic,
+	    user_role,
+	    user_code,
+	    invoice_id,
+	    invoice_code,
+	    invoice_num,
+	    check_code,
+	    invoice_date,
+	    expiry_date,
+	    invoice_type_name,
+	    total_amount,
+	    device_code,
+	    psw_code,
+	    area,
+	    buyer_name,
+	    buyer_code,
+	    buyer_info,
+	    buyer_account,
+	    supplier_name,
+	    supplier_code,
+	    supplier_info,
+	    supplier_account,
+	    amount_useable,
+	    amount_paid,
+	    is_used,
+	    is_modify,
+	    note,
+	    input_way,
+	    input_user,
+	    modify_time,
+		create_time
+	</sql>
+	<insert id="insert" parameterType="com.pay.recontwo.model.Invoice">
+		insert into invoice (
+		<include refid="commonColumn"/>
+		)
+		values
+			(
+			#{id},
+			#{optimistic},
+		   	 #{userRole},
+		   	 #{userCode},
+		   	 #{invoiceId},
+		   	 #{invoiceCode},
+		   	 #{invoiceNum},
+		   	 #{checkCode},
+		   	 #{invoiceDate},
+		   	 #{expiryDate},
+		   	 #{invoiceTypeName},
+		   	 #{totalAmount},
+		   	 #{deviceCode},
+		   	 #{pswCode},
+		   	 #{area},
+		   	 #{buyerName},
+		   	 #{buyerCode},
+		   	 #{buyerInfo},
+		   	 #{buyerAccount},
+		   	 #{supplierName},
+		   	 #{supplierCode},
+		   	 #{supplierInfo},
+		   	 #{supplierAccount},
+		   	 #{amountUseable},
+		   	 #{amountPaid},
+		   	 #{isUsed},
+		   	 #{isModify},
+		   	 #{note},
+		   	 #{inputWay},
+		   	 #{inputUser},
+		   	 #{modifyTime},
+			#{createTime}
+			)
+	</insert>
+	<insert id="insertList" parameterType="java.util.List">
+		insert into invoice (
+		<include refid="commonColumn"/>)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(
+			#{item.id},
+			#{item.optimistic},
+		   	 #{item.userRole},
+		   	 #{item.userCode},
+		   	 #{item.invoiceId},
+		   	 #{item.invoiceCode},
+		   	 #{item.invoiceNum},
+		   	 #{item.checkCode},
+		   	 #{item.invoiceDate},
+		   	 #{item.expiryDate},
+		   	 #{item.invoiceTypeName},
+		   	 #{item.totalAmount},
+		   	 #{item.deviceCode},
+		   	 #{item.pswCode},
+		   	 #{item.area},
+		   	 #{item.buyerName},
+		   	 #{item.buyerCode},
+		   	 #{item.buyerInfo},
+		   	 #{item.buyerAccount},
+		   	 #{item.supplierName},
+		   	 #{item.supplierCode},
+		   	 #{item.supplierInfo},
+		   	 #{item.supplierAccount},
+		   	 #{item.amountUseable},
+		   	 #{item.amountPaid},
+		   	 #{item.isUsed},
+		   	 #{item.isModify},
+		   	 #{item.note},
+		   	 #{item.inputWay},
+		   	 #{item.inputUser},
+		   	 #{item.modifyTime},
+			#{item.createTime}
+			)
+		</foreach>
+	</insert>
+	<delete id="delById" parameterType="java.lang.String">
+		delete from invoice
+		where id=#{id}
+	</delete>
+	<delete id="delByMap" parameterType="java.util.Map">
+		delete from invoice
+		where 1=1
+			<if test="id != null and id != ''">
+				and id=#{id}
+			</if>
+			<if test="optimistic != null and optimistic != ''">
+				and optimistic=#{optimistic}
+			</if>
+		    	<if test="userRole != null and userRole != ''">
+					and user_role=#{userRole}
+				</if>
+		    	<if test="userCode != null and userCode != ''">
+					and user_code=#{userCode}
+				</if>
+		    	<if test="invoiceId != null and invoiceId != ''">
+					and invoice_id=#{invoiceId}
+				</if>
+		    	<if test="invoiceCode != null and invoiceCode != ''">
+					and invoice_code=#{invoiceCode}
+				</if>
+		    	<if test="invoiceNum != null and invoiceNum != ''">
+					and invoice_num=#{invoiceNum}
+				</if>
+		    	<if test="checkCode != null and checkCode != ''">
+					and check_code=#{checkCode}
+				</if>
+		    	<if test="invoiceDate != null and invoiceDate != ''">
+					and invoice_date=#{invoiceDate}
+				</if>
+		    	<if test="expiryDate != null and expiryDate != ''">
+					and expiry_date=#{expiryDate}
+				</if>
+		    	<if test="invoiceTypeName != null and invoiceTypeName != ''">
+					and invoice_type_name=#{invoiceTypeName}
+				</if>
+		    	<if test="totalAmount != null and totalAmount != ''">
+					and total_amount=#{totalAmount}
+				</if>
+		    	<if test="deviceCode != null and deviceCode != ''">
+					and device_code=#{deviceCode}
+				</if>
+		    	<if test="pswCode != null and pswCode != ''">
+					and psw_code=#{pswCode}
+				</if>
+		    	<if test="area != null and area != ''">
+					and area=#{area}
+				</if>
+		    	<if test="buyerName != null and buyerName != ''">
+					and buyer_name=#{buyerName}
+				</if>
+		    	<if test="buyerCode != null and buyerCode != ''">
+					and buyer_code=#{buyerCode}
+				</if>
+		    	<if test="buyerInfo != null and buyerInfo != ''">
+					and buyer_info=#{buyerInfo}
+				</if>
+		    	<if test="buyerAccount != null and buyerAccount != ''">
+					and buyer_account=#{buyerAccount}
+				</if>
+		    	<if test="supplierName != null and supplierName != ''">
+					and supplier_name=#{supplierName}
+				</if>
+		    	<if test="supplierCode != null and supplierCode != ''">
+					and supplier_code=#{supplierCode}
+				</if>
+		    	<if test="supplierInfo != null and supplierInfo != ''">
+					and supplier_info=#{supplierInfo}
+				</if>
+		    	<if test="supplierAccount != null and supplierAccount != ''">
+					and supplier_account=#{supplierAccount}
+				</if>
+		    	<if test="amountUseable != null and amountUseable != ''">
+					and amount_useable=#{amountUseable}
+				</if>
+		    	<if test="amountPaid != null and amountPaid != ''">
+					and amount_paid=#{amountPaid}
+				</if>
+		    	<if test="isUsed != null and isUsed != ''">
+					and is_used=#{isUsed}
+				</if>
+		    	<if test="isModify != null and isModify != ''">
+					and is_modify=#{isModify}
+				</if>
+		    	<if test="note != null and note != ''">
+					and note=#{note}
+				</if>
+		    	<if test="inputWay != null and inputWay != ''">
+					and input_way=#{inputWay}
+				</if>
+		    	<if test="inputUser != null and inputUser != ''">
+					and input_user=#{inputUser}
+				</if>
+		    	<if test="modifyTime != null and modifyTime != ''">
+					and modify_time=#{modifyTime}
+				</if>
+			<if test="createTime != null and createTime != ''">
+				and create_time=#{createTime}
+			</if>
+	</delete>
+	<select id="findById"  resultMap="Invoice" parameterType="java.lang.String">
+		select <include refid="commonColumn"/> from invoice  where 1=1
+			and id=#{id}
+	</select>
+    <select id="findByMap"  resultMap="Invoice" parameterType="java.util.Map">
+		select <include refid="commonColumn"/> from invoice  where 1=1
+			<if test="id != null and id != ''">
+			and id=#{id}
+			</if>
+			<if test="optimistic != null and optimistic != ''">
+			and optimistic=#{optimistic}
+			</if>
+		    	<if test="userRole != null and userRole != ''">
+					and user_role=#{userRole}
+				</if>
+		    	<if test="userCode != null and userCode != ''">
+					and user_code=#{userCode}
+				</if>
+		    	<if test="invoiceId != null and invoiceId != ''">
+					and invoice_id=#{invoiceId}
+				</if>
+		    	<if test="invoiceCode != null and invoiceCode != ''">
+					and invoice_code=#{invoiceCode}
+				</if>
+		    	<if test="invoiceNum != null and invoiceNum != ''">
+					and invoice_num=#{invoiceNum}
+				</if>
+		    	<if test="checkCode != null and checkCode != ''">
+					and check_code=#{checkCode}
+				</if>
+		    	<if test="invoiceDate != null and invoiceDate != ''">
+					and invoice_date=#{invoiceDate}
+				</if>
+		    	<if test="expiryDate != null and expiryDate != ''">
+					and expiry_date=#{expiryDate}
+				</if>
+		    	<if test="invoiceTypeName != null and invoiceTypeName != ''">
+					and invoice_type_name=#{invoiceTypeName}
+				</if>
+		    	<if test="totalAmount != null and totalAmount != ''">
+					and total_amount=#{totalAmount}
+				</if>
+		    	<if test="deviceCode != null and deviceCode != ''">
+					and device_code=#{deviceCode}
+				</if>
+		    	<if test="pswCode != null and pswCode != ''">
+					and psw_code=#{pswCode}
+				</if>
+		    	<if test="area != null and area != ''">
+					and area=#{area}
+				</if>
+		    	<if test="buyerName != null and buyerName != ''">
+					and buyer_name=#{buyerName}
+				</if>
+		    	<if test="buyerCode != null and buyerCode != ''">
+					and buyer_code=#{buyerCode}
+				</if>
+		    	<if test="buyerInfo != null and buyerInfo != ''">
+					and buyer_info=#{buyerInfo}
+				</if>
+		    	<if test="buyerAccount != null and buyerAccount != ''">
+					and buyer_account=#{buyerAccount}
+				</if>
+		    	<if test="supplierName != null and supplierName != ''">
+					and supplier_name=#{supplierName}
+				</if>
+		    	<if test="supplierCode != null and supplierCode != ''">
+					and supplier_code=#{supplierCode}
+				</if>
+		    	<if test="supplierInfo != null and supplierInfo != ''">
+					and supplier_info=#{supplierInfo}
+				</if>
+		    	<if test="supplierAccount != null and supplierAccount != ''">
+					and supplier_account=#{supplierAccount}
+				</if>
+		    	<if test="amountUseable != null and amountUseable != ''">
+					and amount_useable=#{amountUseable}
+				</if>
+		    	<if test="amountPaid != null and amountPaid != ''">
+					and amount_paid=#{amountPaid}
+				</if>
+		    	<if test="isUsed != null and isUsed != ''">
+					and is_used=#{isUsed}
+				</if>
+		    	<if test="isModify != null and isModify != ''">
+					and is_modify=#{isModify}
+				</if>
+		    	<if test="note != null and note != ''">
+					and note=#{note}
+				</if>
+		    	<if test="inputWay != null and inputWay != ''">
+					and input_way=#{inputWay}
+				</if>
+		    	<if test="inputUser != null and inputUser != ''">
+					and input_user=#{inputUser}
+				</if>
+		    	<if test="modifyTime != null and modifyTime != ''">
+					and modify_time=#{modifyTime}
+				</if>
+				<if test="createTime != null and createTime != ''">
+				and create_time=#{createTime}
+				</if>
+				order by create_time
+	</select>
+	<update id="updateById" parameterType="com.pay.recontwo.model.Invoice">
+ 		update invoice
+			<set>
+				id=#{id},
+				optimistic=#{optimistic}+1,
+					user_role=#{userRole},
+					user_code=#{userCode},
+					invoice_id=#{invoiceId},
+					invoice_code=#{invoiceCode},
+					invoice_num=#{invoiceNum},
+					check_code=#{checkCode},
+					invoice_date=#{invoiceDate},
+					expiry_date=#{expiryDate},
+					invoice_type_name=#{invoiceTypeName},
+					total_amount=#{totalAmount},
+					device_code=#{deviceCode},
+					psw_code=#{pswCode},
+					area=#{area},
+					buyer_name=#{buyerName},
+					buyer_code=#{buyerCode},
+					buyer_info=#{buyerInfo},
+					buyer_account=#{buyerAccount},
+					supplier_name=#{supplierName},
+					supplier_code=#{supplierCode},
+					supplier_info=#{supplierInfo},
+					supplier_account=#{supplierAccount},
+					amount_useable=#{amountUseable},
+					amount_paid=#{amountPaid},
+					is_used=#{isUsed},
+					is_modify=#{isModify},
+					note=#{note},
+					input_way=#{inputWay},
+					input_user=#{inputUser},
+					modify_time=#{modifyTime},
+				create_time=#{createTime}
+			</set>
+		WHERE id=#{id} and optimistic=#{optimistic}
+	</update>
+</mapper>
