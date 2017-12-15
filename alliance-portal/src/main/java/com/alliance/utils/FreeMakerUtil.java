@@ -1,3 +1,6 @@
+/**
+ *
+ */
 package com.alliance.utils;
 
 import java.io.File;
@@ -13,9 +16,14 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: FreeMakerUtil 此处填写需要参考的类
+ * @version 2017年12月12日 下午2:10:38
+ * @author chao.luo
+ */
 @Component
 public class FreeMakerUtil {
-
 	public Template getTemplate(String ftlName, String fileWebDir) {
 		try {
 
@@ -50,5 +58,4 @@ public class FreeMakerUtil {
 			}
 		}
 	}
-
 }

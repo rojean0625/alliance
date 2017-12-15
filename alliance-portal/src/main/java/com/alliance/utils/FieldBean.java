@@ -1,7 +1,15 @@
+/**
+ *
+ */
 package com.alliance.utils;
 
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: FieldBean 此处填写需要参考的类
+ * @version 2017年12月12日 下午2:09:24
+ * @author chao.luo
+ */
 public class FieldBean {
-
 	private String fieldName;
 	private String proName;
 	private String proType;
@@ -29,5 +37,4 @@ public class FieldBean {
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
 	}
-
 }

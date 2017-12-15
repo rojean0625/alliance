@@ -1,3 +1,6 @@
+/**
+ *
+ */
 package com.alliance.utils;
 
 import java.io.BufferedOutputStream;
@@ -7,38 +10,63 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: MysqlToBean 此处填写需要参考的类
+ * @version 2017年12月12日 下午2:13:36
+ * @author chao.luo
+ */
 @Component
-public class MysqlToBean{
+public class MysqlToBean {
 	private static Logger log = LoggerFactory.getLogger(MysqlToBean.class);
 	@Resource
 	private DataSource dataSource;
 
-	private String projectSrcPaht = "H:/workspace/recon-two/recon-two-model/src/main/java/com/pay/recontwo/model";
-	private String packageName = "com.pay.recontwo.model";
+	private String projectSrcPaht = "H:/workspace/invoice-services/invoice-services-model/src/main/java/com/pay/invoice/model";
+	private String packageName = "com.pay.invoice.model";
 
-	private String beanProjectSrcPaht = "H:/workspace/recon-two/recon-two-portal/src/main/java/com/pay/recontwo/portal/web/bean";
-	private String beanPackageName = "com.pay.recontwo.portal.web.bean";
+	private String beanProjectSrcPaht = "H:/workspace/invoice-services/invoice-services-portal/src/main/java/com/pay/invoice/portal/web/bean";
+	private String beanPackageName = "com.pay.invoice.portal.web.bean";
 
-	//@Resource
-	//private GenFileFormService genFileFormService;
+	// @Resource
+	// private GenFileFormService genFileFormService;
+
+	public void createJavaBean(String tableName) {
+		try {
+			if (tableName == null || tableName.equals("")) {
+
+			}
+			createJavaBeanByTable(projectSrcPaht, packageName, tableName.trim());
+			log.info("# createJavaBean - {}", tableName);
+		} catch (SQLException e) {
+			log.error("##################### ERROR " + e.getMessage());
+		}
+	}
+
+	public void createWebBean(String tableName) {
+		try {
+			if (tableName == null || tableName.equals("")) {
+
+			}
+			createWebBeanByTable(beanProjectSrcPaht, beanPackageName, tableName.trim());
+			log.info("# createWebBean - {}", tableName);
+		} catch (SQLException e) {
+			log.error("##################### ERROR " + e.getMessage());
+		}
+	}
 
 	public void testSum() {
 		testJavaBean();
 		// testWebBean();
 	}
-
 
 	public void testJavaBean() {
 		/** 如果不关闭连接 限制了一次执行10个 */
@@ -78,7 +106,6 @@ public class MysqlToBean{
 			log.error(e.getMessage());
 		}
 	}
-
 
 	/**
 	 * @Description 根据表名生成JAVABEAN
@@ -180,7 +207,6 @@ public class MysqlToBean{
 			}
 		}
 	}
-
 
 	/**
 	 * @Description mysql查询表字段、类型、注解的SQL
@@ -356,8 +382,8 @@ public class MysqlToBean{
 		StringBuffer sb = new StringBuffer();
 		sb.append("package " + packagePath + ";\r\n");
 		sb.append("import java.util.Date;  		\r\n");
+		sb.append("import com.pay.invoice.model.BaseMapperVO; \r\n");
 		sb.append("public class " + javaClassName + " extends BaseMapperVO {\r\n");
 		return sb.toString();
 	}
-
 }

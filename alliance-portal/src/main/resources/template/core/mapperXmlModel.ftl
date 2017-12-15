@@ -1,4 +1,4 @@
-package com.alliance.mapper;
+package com.pay.invoice.core.mapper;
 
 import ${beanAbsoluteName};
 

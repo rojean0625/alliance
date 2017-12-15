@@ -7,7 +7,7 @@
 		<id column="id" property="id" />
 		<result column="optimistic" property="optimistic" />
 		<#list properties as pro>
-	    	<result column="${pro.fieldName}" property="${pro.proName}" />
+			<result column="${pro.fieldName}" property="${pro.proName}" />
 		</#list>
 		<result column="create_time" property="createTime" />
 	</resultMap>
@@ -15,7 +15,7 @@
 		id,
 		optimistic,
 		<#list properties as pro>
-	    ${pro.fieldName},
+		${pro.fieldName},
 		</#list>
 		create_time
 	</sql>
@@ -28,7 +28,7 @@
 			${r"#{id}"},
 			${r"#{optimistic}"},
 			<#list properties as pro>
-		   	 ${r"#{"}${pro.proName}${r"}"},
+				${r"#{"}${pro.proName}${r"}"},
 			</#list>
 			${r"#{createTime}"}
 			)
@@ -42,7 +42,7 @@
 			${r"#{item.id}"},
 			${r"#{item.optimistic}"},
 			<#list properties as pro>
-		   	 ${r"#{"}item.${pro.proName}${r"}"},
+				${r"#{"}item.${pro.proName}${r"}"},
 			</#list>
 			${r"#{item.createTime}"}
 			)
@@ -62,7 +62,7 @@
 				and optimistic=${r"#{optimistic}"}
 			</if>
 			<#list properties as pro>
-		    	<if test="${pro.proName} != null and ${pro.proName} != ''">
+				<if test="${pro.proName} != null and ${pro.proName} != ''">
 					and ${pro.fieldName}=${r"#{"}${pro.proName}${r"}"}
 				</if>
 			</#list>
@@ -74,7 +74,7 @@
 		select <include refid="commonColumn"/> from ${tableName}  where 1=1
 			and id=${r"#{id}"}
 	</select>
-    <select id="findByMap"  resultMap="${beanSimpleName}" parameterType="java.util.Map">
+	<select id="findByMap"  resultMap="${beanSimpleName}" parameterType="java.util.Map">
 		select <include refid="commonColumn"/> from ${tableName}  where 1=1
 			<if test="id != null and id != ''">
 			and id=${r"#{id}"}
@@ -83,7 +83,7 @@
 			and optimistic=${r"#{optimistic}"}
 			</if>
 			<#list properties as pro>
-		    	<if test="${pro.proName} != null and ${pro.proName} != ''">
+				<if test="${pro.proName} != null and ${pro.proName} != ''">
 					and ${pro.fieldName}=${r"#{"}${pro.proName}${r"}"}
 				</if>
 			</#list>
@@ -93,7 +93,7 @@
 			order by create_time
 	</select>
 	<update id="updateById" parameterType="${beanAbsoluteName}">
- 		update ${tableName}
+		update ${tableName}
 			<set>
 				id=${r"#{id}"},
 				optimistic=${r"#{optimistic}"}+1,

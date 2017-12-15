@@ -1,3 +1,6 @@
+/**
+ *
+ */
 package com.alliance.utils;
 
 import java.io.ByteArrayInputStream;
@@ -6,6 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: ListUtils 此处填写需要参考的类
+ * @version 2017年12月12日 下午2:12:28
+ * @author chao.luo
+ */
 public class ListUtils {
 	public static boolean isBlankList(List<?> list) {
 		if (list != null && !list.isEmpty()) {

@@ -1,16 +1,21 @@
-package com.alliance.mapper;
+/**
+ *
+ */
+package com.alliance.mapper.core;
 
 import java.util.List;
 import java.util.Map;
 
+import com.alliance.model.BaseMapperVO;
+
 
 /**
- * @Description: mybatis操作基类接口
+ * @Description: 这里用一句话描述这个类的作用
  * @see: BaseMapper 此处填写需要参考的类
- * @version 2016年10月12日 下午7:41:12
- * @author guangzhi.ji
+ * @version 2017年12月13日 上午9:23:16
+ * @author chao.luo
  */
-public abstract interface BaseMapper<T extends BaseMapperVO> {
+public interface BaseMapper<T extends BaseMapperVO> {
 	/**
 	 * @Description 插入单条数据
 	 * @param t
@@ -70,12 +75,5 @@ public abstract interface BaseMapper<T extends BaseMapperVO> {
 	 * @see 需要参考的类或方法
 	 */
 	public abstract int updateById(T t);
-
-	/**
-	 * @Description 删除历史数据
-	 * @param map
-	 * @see 需要参考的类或方法
-	 */
-	public abstract void delHistoryData(Map<String, Object> map);
 
 }

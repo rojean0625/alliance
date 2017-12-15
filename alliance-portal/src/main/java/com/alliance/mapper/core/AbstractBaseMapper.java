@@ -1,10 +1,12 @@
-package com.alliance.mapper;
+/**
+ *
+ */
+package com.alliance.mapper.core;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,16 +16,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
-
+import com.alliance.bean.PrimaryTypeEnum;
+import com.alliance.model.BaseMapperVO;
 import com.alliance.utils.ListUtils;
+import com.alliance.utils.ParamValidator;
+import com.alliance.utils.PrimaryKeyGenerator;
 
+
+
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: AbstractBaseMapper 此处填写需要参考的类
+ * @version 2017年12月13日 上午9:26:29
+ * @author chao.luo
+ */
 public abstract class AbstractBaseMapper<T extends BaseMapperVO> extends SqlSessionDaoSupport implements BaseMapper<T> {
-	protected final Logger log = LoggerFactory.getLogger(getClass());
 
-	/** mapper注入类名 */
+	protected final Logger log = LoggerFactory.getLogger(getClass());
+	@Resource
+	private PrimaryKeyGenerator primaryKeyGenerator;
+	@Resource
+	private ParamValidator paramValidator;
 	private String mapperClassName;
+	private PrimaryTypeEnum primaryTypeEnum = PrimaryTypeEnum.UUID;
 	/** 每批插入条数 */
 	private int batchInsertRow = 1000;
 
@@ -144,6 +159,7 @@ public abstract class AbstractBaseMapper<T extends BaseMapperVO> extends SqlSess
 		int rows = 0;
 		try {
 			String nameSpaceMethod = mapperClassName + ".updateById";
+			patchUpdateNecessaryKey(t);
 			rows = getSqlSession().update(nameSpaceMethod, t);
 		} catch (Exception e) {
 			log.error("updateById-errorMsg:" + e.getMessage());
@@ -155,11 +171,6 @@ public abstract class AbstractBaseMapper<T extends BaseMapperVO> extends SqlSess
 	@Autowired
 	public void setMyBatisSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		setSqlSessionFactory(sqlSessionFactory);
-	}
-
-	@Override
-	public void delHistoryData(Map<String, Object> map) {
-
 	}
 
 	/**
@@ -179,19 +190,34 @@ public abstract class AbstractBaseMapper<T extends BaseMapperVO> extends SqlSess
 	 * @see 需要参考的类或方法
 	 */
 	public void patchInsertNecessaryKeyAndVali(T t) {
-		if (isUseShareId()) {
-			String generateId = UUID.randomUUID().toString();
+		if (getPrimaryTypeEnum().equals(PrimaryTypeEnum.SHARD_ID)) {
+			String generateId = primaryKeyGenerator.shareId();
 			t.setId(generateId);
-		} else {
-			String generateId = UUID.randomUUID().toString();
+		} else if (getPrimaryTypeEnum().equals(PrimaryTypeEnum.CLASS_ID)) {
+			String generateId = primaryKeyGenerator.generateId(t.getClass());
+			t.setId(generateId);
+		} else if (getPrimaryTypeEnum().equals(PrimaryTypeEnum.UUID)) {
+			String generateId = primaryKeyGenerator.getUUID();
 			t.setId(generateId);
 		}
 		t.setCreateTime(new Date());
 		t.setOptimistic(0);
-		//paramValidator.valid(t);
+		try {
+			paramValidator.valid(t);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
+	/**
+	 * @Description 更新补充必要数据
+	 * @param list
+	 * @see 需要参考的类或方法
+	 */
+	public void patchUpdateNecessaryKey(T t) {
+		t.setModifyTime(new Date());
+	}
 
 	public int getBatchInsertRow() {
 		return batchInsertRow;
@@ -201,7 +227,7 @@ public abstract class AbstractBaseMapper<T extends BaseMapperVO> extends SqlSess
 		this.batchInsertRow = batchInsertRow;
 	}
 
-	public boolean isUseShareId() {
-		return false;
+	public PrimaryTypeEnum getPrimaryTypeEnum() {
+		return primaryTypeEnum;
 	}
 }

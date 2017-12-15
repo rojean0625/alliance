@@ -1,3 +1,4 @@
+
 package com.alliance.utils;
 
 import java.sql.Connection;
@@ -14,9 +15,14 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * @Description: 这里用一句话描述这个类的作用
+ * @see: CodeMachine 此处填写需要参考的类
+ * @version 2017年12月12日 下午2:17:12
+ * @author chao.luo
+ */
 @Component
 public class CodeMachine {
-
 	/** bf code 序号 **/
 	private int number = 21;
 	HashMap<String, String> map = null;
@@ -25,11 +31,9 @@ public class CodeMachine {
 	private FreeMakerUtil freeMakerUtil;
 	@Resource
 	private DataSource dataSource;
+	private String fileWebDir = "H:/workspace/invoice-services/invoice-services-portal/src/main/resources/template/";
 
-
-	private String fileWebDir = "F:/workspace-new/alliance/alliance-portal/src/main/resources/template/";
-
-	public void generateMapperXmlFile(String tableName,String mapperPackage,String beanPackage,String mapperXmlPath) throws Exception {
+	public void generateMapperXmlFile(String artifactId, String tableName, String mapperPackage, String beanPackage, String mapperXmlPath) throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Mapper";
@@ -43,12 +47,11 @@ public class CodeMachine {
 		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
 		templateData.put("properties", listFieldBean);
 		// 模板文件名，模版参数，待生成文件绝对路径，模版文件路径
-		freeMakerUtil.generateFile("mapperXmlModel.ftl", templateData, mapperXmlPath + filaName + ".xml", fileWebDir);
+		freeMakerUtil.generateFile("mapperXmlModel.ftl", templateData, mapperXmlPath + filaName + ".xml", fileWebDir + artifactId);
 
 	}
 
-
-	public void generateMapperClassFile(String tableName,String mapperPackage,String beanPackage,String mapperClassPath) throws Exception {
+	public void generateMapperClassFile(String artifactId, String tableName, String mapperPackage, String beanPackage, String mapperClassPath) throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Mapper";
@@ -59,15 +62,16 @@ public class CodeMachine {
 		templateData.put("mapperAbsoluteName", mapperPackage + "." + mapperSimpleName);
 		templateData.put("beanSimpleName", beanSimpleName);
 		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
-		freeMakerUtil.generateFile("mapperClassModel.ftl", templateData, mapperClassPath + filaName + ".java", fileWebDir);
+		freeMakerUtil.generateFile("mapperClassModel.ftl", templateData, mapperClassPath + filaName + ".java", fileWebDir + artifactId);
 
 	}
 
-
-	public void generateDaoClassFile(String tableName,String mapperPackage,String  beanPackage,String daoClassPath) throws Exception {
+	public void generateDaoClassFile(String artifactId, String tableName, String mapperPackage, String beanPackage, String daoClassPath, String daoImplClassPath)
+			throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Dao";
+		String fileNameImpl = javaClassName + "DaoImpl";
 		String beanSimpleName = javaClassName;
 		String annotationName = getLowFirstNameByTableName(tableName) + "Dao";
 		Map<String, Object> templateData = new HashMap<String, Object>();
@@ -75,14 +79,14 @@ public class CodeMachine {
 		templateData.put("mapperSimpleName", mapperSimpleName);
 		templateData.put("mapperAbsoluteName", mapperPackage + "." + mapperSimpleName);
 		templateData.put("beanSimpleName", beanSimpleName);
-		templateData.put("beanAbsoluteName",  beanPackage + "." + beanSimpleName);
+		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
 		templateData.put("annotationName", annotationName);
-		freeMakerUtil.generateFile("daoClassModel.ftl", templateData, daoClassPath + filaName + ".java", fileWebDir);
-
+		freeMakerUtil.generateFile("daoClassModel.ftl", templateData, daoClassPath + filaName + ".java", fileWebDir + artifactId);
+		freeMakerUtil.generateFile("daoImplClassModel.ftl", templateData, daoImplClassPath + fileNameImpl + ".java", fileWebDir + artifactId);
 	}
 
-
-	public void generateServiceClassFile(String tableName,String mapperPackage,String beanPackage,String serviceClassPath,String serviceImplClassPath) throws Exception {
+	public void generateServiceClassFile(String artifactId, String tableName, String mapperPackage, String beanPackage, String serviceClassPath,
+			String serviceImplClassPath) throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Service";
@@ -96,14 +100,15 @@ public class CodeMachine {
 		templateData.put("beanSimpleName", beanSimpleName);
 		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
 		templateData.put("annotationName", annotationName);
+		templateData.put("lowerBeanSimpleName", beanSimpleName.substring(0, 1).toLowerCase() + beanSimpleName.substring(1));
 
-		freeMakerUtil.generateFile("serviceClassModel.ftl", templateData, serviceClassPath + filaName + ".java", fileWebDir);
-		freeMakerUtil.generateFile("serviceImplClassModel.ftl", templateData, serviceImplClassPath + filaNameImpl + ".java", fileWebDir);
+		freeMakerUtil.generateFile("serviceClassModel.ftl", templateData, serviceClassPath + filaName + ".java", fileWebDir + artifactId);
+		freeMakerUtil.generateFile("serviceImplClassModel.ftl", templateData, serviceImplClassPath + filaNameImpl + ".java", fileWebDir + artifactId);
 
 	}
 
-
-	public void generateInterfaceClassFile(String tableName,String mapperPackage,String beanPackage,String interfaceClassPath,String interfaceImplClassPath) throws Exception {
+	public void generateInterfaceClassFile(String artifactId, String tableName, String mapperPackage, String beanPackage, String interfaceClassPath,
+			String interfaceImplClassPath) throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Interface";
@@ -115,15 +120,14 @@ public class CodeMachine {
 		templateData.put("mapperSimpleName", mapperSimpleName);
 		templateData.put("mapperAbsoluteName", mapperPackage + "." + mapperSimpleName);
 		templateData.put("beanSimpleName", beanSimpleName);
-		templateData.put("beanAbsoluteName", beanPackage+ "." + beanSimpleName);
+		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
 		templateData.put("annotationName", annotationName);
 		freeMakerUtil.generateFile("interfaceClassModel.ftl", templateData, interfaceClassPath + filaName + ".java", fileWebDir);
-		freeMakerUtil.generateFile("interfaceImplClassModel.ftl", templateData, interfaceImplClassPath + filaNameImpl + ".java", fileWebDir);
+		freeMakerUtil.generateFile("interfaceImplClassModel.ftl", templateData, interfaceImplClassPath + filaNameImpl + ".java", fileWebDir + artifactId);
 
 	}
 
-
-	public void generateControllerFile(String tableName,String mapperPackage,String beanPackage,String controllerClassPath) throws Exception {
+	public void generateControllerFile(String tableName, String mapperPackage, String beanPackage, String controllerClassPath) throws Exception {
 		String javaClassName = getClassNameByTableName(tableName);
 		String mapperSimpleName = javaClassName + "Mapper";
 		String filaName = javaClassName + "Controller";
@@ -136,11 +140,9 @@ public class CodeMachine {
 		templateData.put("beanSimpleName", beanSimpleName);
 		templateData.put("beanAbsoluteName", beanPackage + "." + beanSimpleName);
 		templateData.put("annotationName", annotationName);
-		//String generateControllerClassPath = "F:/workspace-new/alliance/alliance-portal/src/main/java/com/alliance/web/controller/";
-		freeMakerUtil.generateFile("controllerClassModel.ftl", templateData, controllerClassPath + filaName + ".java", fileWebDir);
+		freeMakerUtil.generateFile("controllerClassModel.ftl", templateData, controllerClassPath + filaName + ".java", fileWebDir + "portal/");
 
 	}
-
 
 	public void printPermissions(String tableName) throws Exception {
 		String beanSimpleName = getClassNameByTableName(tableName);
@@ -285,8 +287,9 @@ public class CodeMachine {
 		try {
 			connection = dataSource.getConnection();
 			String querySql = execSql(tablename);
+			System.out.println(querySql);
 			prepareStatement = connection.prepareStatement(querySql);
-			rs = prepareStatement.executeQuery(querySql);
+			rs = prepareStatement.executeQuery();
 			while (rs.next()) {
 				String oldfieldname = rs.getString("oldfieldname");
 				/** 这三个字段父类继承不需要生成 */
@@ -295,6 +298,7 @@ public class CodeMachine {
 				}
 				FieldBean FieldBean = new FieldBean();
 				FieldBean.setFieldName(oldfieldname);
+				System.out.println(oldfieldname);
 				FieldBean.setProName(getFieldNameByTableName(oldfieldname));
 				list.add(FieldBean);
 			}
@@ -352,5 +356,4 @@ public class CodeMachine {
 		}
 		return sb.toString();
 	}
-
 }
