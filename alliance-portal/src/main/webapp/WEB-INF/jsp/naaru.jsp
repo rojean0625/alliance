@@ -14,6 +14,7 @@ function naaruLight(){
 	var target = "naaruLight.htm";
 	var parameters = "rootName="+rootName+"&artifactId="+artifactId;
 
+
 	$.ajax({
 		type: "POST",
 		url: target,
@@ -42,10 +43,11 @@ function naaruLight(){
 <body>
 <table border=0>
 <form method="post" id="fm" action="activate.htm">
+<input type="hidden" name="yesheng" value="1"/>
 <tr>
 	<td>RootName: </td>
 	<td>
-		<input id="rootName" name="rootName" value="alliance"/>
+		<input id="rootName" name="nr.rootName" value="alliance"/>
 	</td>
 </tr>
 <tr>
@@ -79,7 +81,7 @@ function naaruLight(){
 
 <tr>
 	<td>Dao Path: </td>
-	<td><input id="daoPath" name="daoPath" style="width:1000px" /></td>
+	<td><input id="daoPath" name="daoPath" style="width:1000px"/></td>
 </tr>
 <tr>
 	<td>DaoImpl Path: </td>
